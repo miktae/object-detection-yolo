@@ -37,4 +37,4 @@ Give a ⭐️ if this project helped you!
 ## 📝 License
 
 Copyright © 2021 [miktae](https://github.com/miktae).<br />
-This project is [Mozilla Public License 2.0](https://github.com/miktae/object-detection-yolo/blob/main/LICENSE) licensed.
+This project is [MIT](https://github.com/miktae/object-detection-yolo/blob/main/LICENSE) licensed.
