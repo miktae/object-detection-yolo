@@ -7,7 +7,7 @@ YOLOv5 🚀 is a family of object detection architectures and models pretrained 
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install 
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install <br/>
 Link datasets: [here](https://drive.google.com/drive/folders/1RckXDHi40BnmWaZrcG_KIbbk6KagZg7r?usp=sharing)
 ```bash
 pip install -r requirements.txt  # install
