@@ -1,0 +1,62 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+#root{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 140px;
+  font-size: 22px;
+}
+  
+.header{
+  display: flex;
+  position: fixed;
+  top: 0;
+  overflow: hidden;
+  background-color: #fafafa;
+  width: 100%;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.title{
+  margin-left: 3%;
+}
+
+.title a{
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.account{
+  margin-right: 3%;
+}
+
+#link {
+    visibility: hidden;
+}
+
+#download{
+  margin-left: 10%;
+}
+
+#video, #file{
+  display: none;
+}
+
+.cap{
+  display: flex;
+  justify-content: center;
+}
+
+#sendbutton{
+  margin-left: 24%;
+  padding: 3px;
+}
+
+.item{
+  margin: 10px;
+  font-size: 22px;
+}

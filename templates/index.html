@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Scientific Research - Home</title>
+  <link rel="icon" type="image/png" href="../static/images/icons/favicon.ico" />
+  <link rel="stylesheet" type="text/css" href="../static/index.css" />
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="../static/index.js"></script>
+</head>
+
+<body>
+  <div class="header">
+    <div class="title">
+      <h1>Object Detection - YOLO, Flask</h1>
+      <p>Designed and coded by
+        <a href="https://zalo.me/thanh_nguyen_vq" target="_blank">
+          Thanh Nguyen
+        </a>
+      </p>
+      <p>
+        Developed by 
+        <a href="https://zalo.me/g/lqvyfv904">
+          Scientific Research Group 1- Pham Nam
+        </a>
+      </p>
+    </div>
+    <div class="account">
+      <p id="user"></p>
+      <a href="" id="signout">Sign out</a>
+    </div>
+  </div>
+  <div id="root">
+    <div class="option">
+      <select id="select">
+        <option value="camera">Camera</option>
+        <option value="file">File</option>
+      </select>
+      <button id="getOptions">Send</button>
+      <br><br>
+      <div id="video">
+        <img src="{{ url_for('video') }}" width="100%" />
+        <img src="" id="capturedImage">
+        <div class="count" id="list1"></div>
+        <div class="cap">
+          <button id="capture">
+            Capture Images
+          </button>
+        </div>
+      </div>
+    </div>
+    <div className="pre_img">
+      <span style="width: 100%;">
+        <img id="imagebox" src="" />
+        <img id="detect-img" src="" />
+      </span>
+    </div>
+    <div id="link">
+      <div id="list"></div>
+      <a href="" id="download" download>Download image</a>
+    </div>
+    <div id="file">
+      <form>
+        <input id="imageinput" type="file" name="image" onchange="readUrl(this)" />
+      </form><br>
+      <button name="send" id="sendbutton">Upload</button>
+      <br>
+    </div>
+  </div>
+  <br>
+  <script src="../static/js/choose.js" defer></script>
+  <script src="../static/js/capture.js" defer></script>
+  <script src="../static/view.js" defer></script>
+  <script src="../static/js/user.js" type="module"></script>
+</body>
+</html>
