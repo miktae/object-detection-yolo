@@ -15,7 +15,7 @@ pip install -r requirements.txt  # install
 
 ## Run and deploy 
 ```bash
-pip -m flask run # run
+python -m flask run # run
 ```
 
 ## Contributing
