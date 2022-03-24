@@ -13,40 +13,71 @@
 <body>
   <div class="header">
     <div class="title">
-      <h1>Object Detection - YOLO, Flask</h1>
+      <h1>Object Detection - YOLO & Flask</h1>
       <p>Designed and coded by
         <a href="https://zalo.me/thanh_nguyen_vq" target="_blank">
           Thanh Nguyen
         </a>
       </p>
       <p>
-        Developed by 
-        <a href="https://zalo.me/g/lqvyfv904">
+        Developed by
+        <a href="https://zalo.me/g/lqvyfv904" target="_blank">
           Scientific Research Group 1- Pham Nam
         </a>
       </p>
     </div>
     <div class="account">
       <p id="user"></p>
+      <!-- <span id="History">
+        <a href="/history">History</a>
+      </span> &nbsp;&nbsp; -->
       <a href="" id="signout">Sign out</a>
     </div>
   </div>
   <div id="root">
     <div class="option">
+      Source:
       <select id="select">
-        <option value="camera">Camera</option>
+        <option value="cap">Camera- Manual Detection</option>
+        <option value="ins">Camera- Auto Detection</option>
         <option value="file">File</option>
       </select>
+      <label for="rate">Get result after: </label>
+      <input type="number" id="rate" min="0" max="100" value="20"> s &ensp;
       <button id="getOptions">Send</button>
       <br><br>
       <div id="video">
         <img src="{{ url_for('video') }}" width="100%" />
-        <img src="" id="capturedImage">
+        <div>
+          <img src="" id="capturedImage">
+        </div>
         <div class="count" id="list1"></div>
         <div class="cap">
           <button id="capture">
-            Capture Images
+           📷 Capture Images
           </button>
+          &ensp;
+          <button id="capreset">
+            Reset
+          </button>
+        </div>
+      </div>
+      <div id="ins-video">
+        <div class="image">
+          <img src="{{ url_for('video') }}" width="100%" />
+          &ensp;
+          <img src="" id="detected">
+        </div>
+        <br>
+        <div class="insfuncs">
+          <div class="operate">
+            <button id="on">Start</button>
+            &ensp;
+            <button id="off">Stop</button>
+            &ensp;
+            <button id="reset">Reset</button>
+          </div>
+          <div class="count" id="list2"></div>
         </div>
       </div>
     </div>
@@ -62,7 +93,9 @@
     </div>
     <div id="file">
       <form>
-        <input id="imageinput" type="file" name="image" onchange="readUrl(this)" />
+        <div>
+          <input id="imageinput" type="file" name="image" onchange="readUrl(this)" />
+        </div>
       </form><br>
       <button name="send" id="sendbutton">Upload</button>
       <br>
@@ -71,7 +104,9 @@
   <br>
   <script src="../static/js/choose.js" defer></script>
   <script src="../static/js/capture.js" defer></script>
+  <script src="../static/ins.js" defer></script>
   <script src="../static/view.js" defer></script>
   <script src="../static/js/user.js" type="module"></script>
 </body>
+
 </html>

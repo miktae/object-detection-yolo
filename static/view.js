@@ -18,9 +18,8 @@ $.getJSON(url, function( data ) {
     + key + " : " + val + "</p>" );
   });
  
-  // console.log(items);
+  console.log(items);
   $("#list").html( items )
 
   $("#list1").html( items )
-
 });}

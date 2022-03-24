@@ -1,10 +1,21 @@
-var i = 1;
+let iVal = localStorage.getItem("iValues");
+let j = JSON.parse(iVal)
+console.log(j)
+
+if (j === null) {
+  localStorage.setItem('iValues', JSON.stringify({
+    i: Number(1)
+  }))
+  console.log(j.i)
+}
+console.log(j.i)
 
 window.onload = () => {
-  let authToken = sessionStorage.getItem('Auth Token')
-  //if (!authToken) {
-    //window.location.href = '/login';
-  //}
+  // let authToken = sessionStorage.getItem('Auth Token')
+  // if (!authToken) {
+  //   window.location.href = '/login';
+  // }
+
   $("#sendbutton").click(() => {
     imagebox = $("#imagebox");
     link = $("#link");
@@ -28,18 +39,24 @@ window.onload = () => {
           // bytestring = data["status"];
           // image = bytestring.split("'")[1];
           $("#link").css("visibility", "visible");
-          if(i == 1){
+          if (j.i == 1) {
             $("#download").attr("href", "static/exp/" + data);
             $("#detect-img").attr("src", "static/exp/" + data);
-            console.log(i);
-            i++;
-        }
-          else{
-            $("#download").attr("href", "static/exp" + i +"/" + data);
-            $("#detect-img").attr("src", "static/exp" + i +"/" + data);
-            
-            console.log(i);
-            i++;
+            // console.log(iVal);
+            localStorage.setItem('iValues', JSON.stringify({
+              //   //Insert Number(value)
+              i: Number(2)
+            }))
+          }
+          else {
+            $("#download").attr("href", "static/exp" + j.i + "/" + data);
+            $("#detect-img").attr("src", "static/exp" + j.i + "/" + data);
+            //  console.log(iVal);
+
+            localStorage.setItem('iValues', JSON.stringify({
+              //Insert Number(value)
+              i: Number(j.i += 1)
+            }))
           }
           console.log(data);
         },

@@ -32,6 +32,26 @@
 
 .account{
   margin-right: 3%;
+  margin-top: 1.2%;
+}
+
+select{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 3px;
+  text-indent: 2px;
+
+}
+
+#getOptions{
+  padding: 3px;
+  border-radius: 1px;
+}
+
+#rate{
+  padding: 3px;
+  width: 8%;
 }
 
 #link {
@@ -39,14 +59,49 @@
 }
 
 #download{
-  margin-left: 10%;
+  margin-left: 28%;
 }
 
-#video, #file{
+#video, #file, #ins-video{
   display: none;
 }
 
+#ins-video{
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#ins-video > .image{
+   display: flex;
+   flex-direction: row;
+}
+
 .cap{
+  display: flex;
+  justify-content: center;
+}
+
+button{
+  padding: 3px;
+}
+
+button:hover{ cursor: pointer; }
+
+.insfuncs{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.operate button{
+  padding: 10px 12px;
+  font: 1rem sans-serif;
+}
+
+.insfuncs .operate2{
+  margin-top: 12px;
   display: flex;
   justify-content: center;
 }
@@ -60,3 +115,40 @@
   margin: 10px;
   font-size: 22px;
 }
+
+.task{
+  display: flex;
+  background-color: rgb(248, 248, 248);
+  margin-top: 6%;
+  justify-content: center;
+  width: 30%;
+}
+
+.task p{
+  padding: 3%;
+}
+
+.task p:hover, p:active{
+  cursor: pointer;
+  background-color: blue;
+  color: white;
+}
+
+#on{
+  background-color: green;
+  color: white;
+}
+
+#on:active{
+  background-color: rgb(3, 56, 38);
+}
+
+#off{
+  background-color: red;
+  color: white;
+}
+
+#off:active{
+  background-color: rgb(246, 38, 1);
+}
+

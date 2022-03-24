@@ -1,25 +1,23 @@
 from flask import Flask, render_template, request, send_file, Response, session
 from werkzeug.utils import secure_filename
 import os
-import subprocess
 import cv2
 import datetime
 import detect
 import json
-
+import mimetypes
+mimetypes.add_type('application/javascript', '.js')
+mimetypes.add_type('text/css', '.css')
 app = Flask(__name__)
-app.secret_key = "super secret key"
-app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-app.run(debug=True)
-uploads_dir = os.path.join(app.instance_path, 'uploads')
 
+uploads_dir = os.path.join(app.instance_path, 'uploads')
 os.makedirs(uploads_dir, exist_ok=True)
 
 camera = cv2.VideoCapture(0)
 
-filename = ""
 
+cbad = cgood = ctotal = 0
+bad = good = total = 0
 
 def generate_frames():
     while True:
@@ -39,7 +37,6 @@ def generate_frames():
 def video():
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -48,39 +45,79 @@ def index():
 def login():
     return render_template('login.html')
 
-
 @app.route("/forgot-password")
 def forgot():
     return render_template('forgot-password.html')
 
 # background process happening without any refreshing
+@app.route('/history')
+def histor():
+    return render_template('history.html')
+
 
 @app.route('/capture')
 def background_process_test():
     while camera.isOpened():
+        global cbad, cgood, ctotal
         success, image = camera.read()
         if success:
             now = datetime.datetime.now()
             cv2.imwrite(os.path.join('data/images/capture', '%dh%dm%ds_%d_%d_%d.png') %
                         (now.hour, now.minute, now.second, now.day, now.month, now.year), image)
-            #subprocess.run("ls", shell=True)
-            # subprocess.run(['python', 'detect.py','--weights'
-            # ,'runs/train/exp/weights/best.pt','--data','data/data.yaml', '--name', 'capture'
-            # ,'--source',  os.path.join('data/images/capture', '%dh%dm%ds_%d_%d_%d.png') %(now.hour, now.minute, now.second, now.day, now.month, now.year)], shell=True)
             detect.run(
-                weights='runs/train/exp/weights/best.pt',
+                weights='runs/train/exp/weights/best1.pt',
                 data='data/data.yaml',
                 source=os.path.join('data/images/capture', '%dh%dm%ds_%d_%d_%d.png') % (now.hour,now.minute, now.second, now.day, now.month, now.year),
-                name = 'capture'                                                                       
+                name = 'capture',                                                                      
             )
             savefig = 'static/'
             filefig = "capture.json"
             comfig = os.path.join(savefig, filefig)
             fl = open(comfig, "w")
+            cbad += detect.totalBad
+            cgood += detect.totalGood
+            ctotal = bad + good
             e = {
-             "Bad": f'{detect.totalBad}',
-             "Good": f'{detect.totalGood}',
-             "Total": f'{detect.totalBad + detect.totalGood}'
+             "Bad": f'{cbad}',
+             "Good": f'{cgood}',
+             "Total": f'{ctotal}',
+             'Detected at': '%dh%dm%ds %d/%d/%d' % (now.hour,now.minute, now.second, now.day, now.month, now.year)
+            }
+           # Serializing json 
+            json_obj = json.dumps(e, indent = 4)
+            fl.write(json_obj)
+            fl.close()
+            break
+        else:
+            break
+    return ("nothing")
+@app.route('/ins')
+def process():
+    while camera.isOpened():
+        global bad, good, total
+        success, image = camera.read()
+        if success:
+            now = datetime.datetime.now()
+            cv2.imwrite(os.path.join('data/images/ins', '%dh%dm%ds_%d_%d_%d.png') %
+                        (now.hour, now.minute, now.second, now.day, now.month, now.year), image)
+            detect.run(
+                weights='runs/train/exp/weights/best1.pt',
+                data='data/data.yaml',
+                source=os.path.join('data/images/ins', '%dh%dm%ds_%d_%d_%d.png') % (now.hour,now.minute, now.second, now.day, now.month, now.year),
+                name = 'de'                                                                       
+            )
+            savefig = 'static/'
+            filefig = "ins.json"
+            comfig = os.path.join(savefig, filefig)
+            fl = open(comfig, "w")
+            bad += detect.totalBad
+            good += detect.totalGood
+            total = bad + good
+            e = {
+             "Bad": f'{bad}',
+             "Good": f'{good}',
+             "Total": f'{total}',
+             'Detected at': '%dh%dm%ds %d/%d/%d' % (now.hour,now.minute, now.second, now.day, now.month, now.year)
             }
            # Serializing json 
             json_obj = json.dumps(e, indent = 4)
@@ -91,6 +128,49 @@ def background_process_test():
             break
     return ("nothing")
 
+@app.route('/reset')
+def reset():
+    now = datetime.datetime.now()
+    global bad, good, total
+    bad = good = total = 0
+    savefig = 'static/'
+    filefig = "ins.json"
+    comfig = os.path.join(savefig, filefig)
+    fl = open(comfig, "w")
+    e ={
+        "Bad": f'{bad}',
+        "Good": f'{good}',
+        "Total": f'{total}',
+        'Detected at': '%dh%dm%ds %d/%d/%d' % (now.hour,now.minute, now.second, now.day, now.month, now.year)
+    }
+    # Serializing json 
+    json_obj = json.dumps(e, indent = 4)
+    fl.write(json_obj)
+    fl.close()
+    return ("nothing")
+
+@app.route('/capreset')
+def capreset():
+    now = datetime.datetime.now()
+    global bad, good, total
+    bad = good = total = 0
+    savefig = 'static/'
+    filefig = "capture.json"
+    comfig = os.path.join(savefig, filefig)
+    fl = open(comfig, "w")
+    e ={
+        "Bad": f'{bad}',
+        "Good": f'{good}',
+        "Total": f'{total}',
+        'Detected at': '%dh%dm%ds %d/%d/%d' % (now.hour,now.minute, now.second, now.day, now.month, now.year)
+    }
+    # Serializing json 
+    json_obj = json.dumps(e, indent = 4)
+    fl.write(json_obj)
+    fl.close()
+    return ("nothing")
+
+
 @app.route("/detect", methods=['POST'])
 def e():
     if not request.method == "POST":
@@ -98,14 +178,12 @@ def e():
     video = request.files['video']
     video.save(os.path.join(uploads_dir, secure_filename(video.filename)))
     print(video)
-    #subprocess.run("ls", shell=True)
-    #subprocess.run(['python', 'detect.py','--weights','runs/train/exp/weights/best.pt','--data','data/data.yaml', '--source',os.path.join(uploads_dir, secure_filename(video.filename)) ], shell=True)
-    # return os.path.join(uploads_dir, secure_filename(video.filename))
     detect.run(
-        weights='runs/train/exp/weights/best.pt',
+        weights='runs/train/exp/weights/best1.pt',
         data='data/data.yaml',
         source=os.path.join(uploads_dir, secure_filename(video.filename))
     )
+    now = datetime.datetime.now()
     save_path = 'static/'
     file_name = "product.json"
     completeName = os.path.join(save_path, file_name)
@@ -113,7 +191,8 @@ def e():
     t = {
         "Bad": f'{detect.totalBad}',
         "Good": f'{detect.totalGood}',
-        "Total": f'{detect.totalBad + detect.totalGood}'
+        "Total": f'{detect.totalBad + detect.totalGood}',
+        'Detected at': '%dh%dm%ds %d/%d/%d' % (now.hour,now.minute, now.second, now.day, now.month, now.year)
     }
     # Serializing json 
     json_object = json.dumps(t, indent = 4)
@@ -132,3 +211,10 @@ def return_file():
         # return send_from_directory(loc, obj)
     except Exception as e:
         return str(e)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+    app.secret_key = "super secret key"
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
+    app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0

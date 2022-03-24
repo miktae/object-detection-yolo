@@ -29,7 +29,8 @@ let password = document.getElementById('pass');
 let form = document.getElementById('form');
 
 form.addEventListener('submit', (e) => {
-    e.preventDefault();
+  e.preventDefault();
+  console.log('submit'); 
     signInWithEmailAndPassword(auth, email.value, password.value)
     .then((userCredential) => {
       // Signed in 
